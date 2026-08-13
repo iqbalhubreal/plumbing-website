@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plumbing Business Template</title>
+<meta name="description" content="Local plumbing company website template.">
+<meta property="og:title" content="">
+<meta property="og:description" content="">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#155787">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%23155787'/%3E%3Cpath d='M12 4C12 4 7 10.5 7 14A5 5 0 0 0 17 14C17 10.5 12 4 12 4Z' fill='%23ffffff'/%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<noscript><div class="noscript-msg">This site needs JavaScript enabled to load properly.</div></noscript>
+<a href="#main" class="skip-link">Skip to content</a>
+
+<!-- ============ HEADER ============ -->
+<header class="header" id="header">
+  <div class="container header__inner">
+    <a href="#top" class="logo" id="logo" aria-label="Home"></a>
+
+    <nav class="nav" aria-label="Primary">
+      <ul class="nav__list">
+        <li><a href="#services">Services</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#gallery">Work</a></li>
+        <li><a href="#reviews">Reviews</a></li>
+        <li><a href="#faq">FAQ</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+
+    <div class="header__actions">
+      <a href="tel:" id="header-phone" class="header__phone"></a>
+      <a href="#contact" id="header-cta" class="btn btn--accent btn--sm"></a>
+      <button id="nav-toggle" class="nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-nav"></button>
+    </div>
+  </div>
+</header>
+
+<!-- ============ MOBILE NAV ============ -->
+<div class="mobile-nav" id="mobile-nav" hidden>
+  <ul class="mobile-nav__list">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#gallery">Work</a></li>
+    <li><a href="#reviews">Reviews</a></li>
+    <li><a href="#faq">FAQ</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <div class="mobile-nav__actions">
+    <a href="tel:" id="mobile-nav-phone" class="btn btn--accent btn--block"></a>
+    <a href="#contact" class="btn btn--outline btn--block" id="mobile-nav-quote"></a>
+  </div>
+</div>
+<div class="mobile-nav-backdrop" id="mobile-nav-backdrop" hidden></div>
+
+<main id="main">
+
+  <!-- ============ HERO ============ -->
+  <section class="hero" id="top">
+    <div class="container hero__inner">
+      <div class="hero__content">
+        <p class="eyebrow" id="hero-eyebrow"></p>
+        <h1 class="hero__headline" id="hero-headline"></h1>
+        <p class="hero__sub" id="hero-sub"></p>
+        <div class="hero__actions">
+          <a href="tel:" id="hero-cta-primary" class="btn btn--accent btn--lg"></a>
+          <a href="#services" id="hero-cta-secondary" class="btn btn--outline btn--lg"></a>
+        </div>
+        <ul class="hero__trust" id="hero-trust"></ul>
+      </div>
+
+      <div class="hero__visual" aria-hidden="true">
+        <svg class="hero-diagram" viewBox="0 0 360 360" fill="none">
+          <polyline class="pipe-line" points="20,300 20,180 90,180 90,90 176,90" />
+          <polyline class="pipe-line" points="340,60 340,140 262,140 262,222 105,222" />
+          <polyline class="pipe-line" points="55,30 100,30 100,180" />
+
+          <polyline class="pipe-flow" points="20,300 20,180 90,180 90,90 176,90" />
+          <polyline class="pipe-flow" points="340,60 340,140 262,140 262,222 105,222" />
+          <polyline class="pipe-flow" points="55,30 100,30 100,180" />
+
+          <circle class="pipe-joint" cx="20" cy="180" r="4.5"/>
+          <circle class="pipe-joint" cx="90" cy="180" r="4.5"/>
+          <circle class="pipe-joint" cx="90" cy="90" r="4.5"/>
+          <circle class="pipe-joint" cx="176" cy="90" r="4.5"/>
+          <circle class="pipe-joint" cx="340" cy="140" r="4.5"/>
+          <circle class="pipe-joint" cx="262" cy="140" r="4.5"/>
+          <circle class="pipe-joint" cx="262" cy="222" r="4.5"/>
+          <circle class="pipe-joint" cx="105" cy="222" r="4.5"/>
+          <circle class="pipe-joint" cx="100" cy="30" r="4.5"/>
+          <circle class="pipe-joint" cx="100" cy="180" r="4.5"/>
+
+          <g class="gauge" transform="translate(180,180)">
+            <circle class="gauge-ring-bg" r="72"/>
+            <circle class="gauge-ring-fill" r="72" transform="rotate(-90)"/>
+            <g class="gauge-ticks">
+              <line x1="0" y1="-72" x2="0" y2="-62" transform="rotate(0)"/>
+              <line x1="0" y1="-72" x2="0" y2="-62" transform="rotate(45)"/>
+              <line x1="0" y1="-72" x2="0" y2="-62" transform="rotate(90)"/>
+              <line x1="0" y1="-72" x2="0" y2="-62" transform="rotate(135)"/>
+              <line x1="0" y1="-72" x2="0" y2="-62" transform="rotate(180)"/>
+              <line x1="0" y1="-72" x2="0" y2="-62" transform="rotate(225)"/>
+              <line x1="0" y1="-72" x2="0" y2="-62" transform="rotate(270)"/>
+              <line x1="0" y1="-72" x2="0" y2="-62" transform="rotate(315)"/>
+            </g>
+            <circle class="gauge-center" r="48"/>
+            <line class="gauge-needle" x1="0" y1="6" x2="0" y2="-46"/>
+            <circle class="gauge-needle-pin" r="4"/>
+          </g>
+        </svg>
+
+        <div class="hero-status" id="hero-status">
+          <span class="hero-status__dot"></span>
+          <span class="hero-status__text">
+            <span class="hero-status__label" id="hero-status-label"></span>
+            <span class="hero-status__value" id="hero-status-value"></span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ STATS / GAUGES ============ -->
+  <section class="stats" id="stats">
+    <div class="container">
+      <p class="eyebrow eyebrow--center">System readout</p>
+      <div class="stats__grid" id="stats-grid"></div>
+    </div>
+  </section>
+
+  <!-- ============ SERVICES ============ -->
+  <section class="services" id="services">
+    <div class="container">
+      <div class="section-head reveal">
+        <p class="eyebrow">What we fix</p>
+        <h2>Plumbing services, done right the first time</h2>
+      </div>
+      <div class="services__grid" id="services-grid"></div>
+    </div>
+  </section>
+
+  <!-- ============ ABOUT ============ -->
+  <section class="about" id="about">
+    <div class="container about__inner">
+      <div class="about__media" id="about-media"></div>
+      <div class="about__content">
+        <p class="eyebrow" id="about-eyebrow"></p>
+        <h2 id="about-headline"></h2>
+        <p id="about-text"></p>
+        <ul class="about__features" id="about-features"></ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SERVICE AREAS ============ -->
+  <section class="areas" id="areas">
+    <div class="container">
+      <div class="section-head section-head--center reveal">
+        <p class="eyebrow">Where we work</p>
+        <h2>Proudly serving your neighborhood</h2>
+      </div>
+      <ul class="areas__list" id="areas-list"></ul>
+    </div>
+  </section>
+
+  <!-- ============ GALLERY ============ -->
+  <section class="gallery" id="gallery">
+    <div class="container">
+      <div class="section-head reveal">
+        <p class="eyebrow">Recent work</p>
+        <h2>A few jobs we're proud of</h2>
+      </div>
+      <div class="gallery__grid" id="gallery-grid"></div>
+    </div>
+  </section>
+
+  <!-- ============ TESTIMONIALS ============ -->
+  <section class="testimonials" id="reviews">
+    <div class="container">
+      <div class="section-head section-head--center reveal">
+        <p class="eyebrow">What customers say</p>
+        <h2>Real reviews from real jobs</h2>
+      </div>
+      <div class="testimonials__viewport">
+        <div class="testimonials__track" id="testimonials-track"></div>
+      </div>
+      <div class="testimonials__controls">
+        <button id="testi-prev" class="testi-btn" aria-label="Previous review"></button>
+        <div class="testimonials__dots" id="testi-dots"></div>
+        <button id="testi-next" class="testi-btn" aria-label="Next review"></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CTA BANNER ============ -->
+  <section class="cta-banner">
+    <div class="container cta-banner__inner">
+      <h2>Something leaking right now?</h2>
+      <p>Emergency dispatch is available around the clock. Call now and we'll walk you through it.</p>
+    </div>
+  </section>
+
+  <!-- ============ FAQ ============ -->
+  <section class="faq" id="faq">
+    <div class="container">
+      <div class="section-head section-head--center reveal">
+        <p class="eyebrow">Common questions</p>
+        <h2>Frequently asked questions</h2>
+      </div>
+      <div class="faq__list" id="faq-list"></div>
+    </div>
+  </section>
+
+  <!-- ============ CONTACT ============ -->
+  <section class="contact" id="contact">
+    <div class="container contact__inner">
+      <div class="contact__info">
+        <p class="eyebrow">Start here</p>
+        <h2>Get in touch</h2>
+        <p>Have a question or need a service? Call us directly and speak with the team.</p>
+        <ul class="contact__details" id="contact-details"></ul>
+        <ul class="contact__hours" id="contact-hours"></ul>
+      </div>
+
+      <div class="contact__call-card">
+        <div>
+          <p class="contact__call-card-title">Prefer to talk directly?</p>
+          <p class="contact__call-card-text">Call us and speak with the team directly. No forms or email needed.</p>
+          <a href="tel:" id="contact-call" class="btn btn--accent btn--lg"></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer class="footer" id="footer">
+  <div class="container footer__inner">
+    <div class="footer__brand">
+      <a href="#top" class="logo logo--footer" id="footer-logo"></a>
+      <p id="footer-tagline"></p>
+      <ul class="footer__socials" id="footer-socials"></ul>
+    </div>
+
+    <div class="footer__col">
+      <p class="footer__heading">Company</p>
+      <ul class="footer__links">
+        <li><a href="#services">Services</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#gallery">Our work</a></li>
+        <li><a href="#reviews">Reviews</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ul>
+    </div>
+
+    <div class="footer__col">
+      <p class="footer__heading">Contact</p>
+      <ul class="footer__links" id="footer-contact"></ul>
+    </div>
+
+    <div class="footer__col">
+      <p class="footer__heading">Hours</p>
+      <ul class="footer__links" id="footer-hours"></ul>
+      <p class="footer__emergency" id="footer-emergency"></p>
+    </div>
+  </div>
+
+  <div class="footer__bottom">
+    <p id="footer-copyright"></p>
+  </div>
+</footer>
+
+<div class="mobile-cta" id="mobile-cta">
+  <a href="tel:" id="mobile-cta-call" class="btn btn--accent btn--block"></a>
+</div>
+
+<button class="back-to-top" id="back-to-top" aria-label="Back to top" hidden></button>
+
+<script src="js/icons.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

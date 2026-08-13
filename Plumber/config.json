@@ -1,0 +1,107 @@
+{
+  "business": {
+    "name": "BluePeak Plumbing",
+    "shortName": "BluePeak",
+    "tagline": "Fast, Honest Plumbing You Can Trust",
+    "phone": "(555) 219-4477",
+    "phoneLink": "+15552194477",
+    "email": "hello@bluepeakplumbing.com",
+    "address": "1420 Harbor Ave, Riverside, CA",
+    "foundedYear": 2005
+  },
+
+  "theme": {
+    "primary": "#155787",
+    "primaryDark": "#0E2436",
+    "primaryLight": "#1F6FA3",
+    "accent": "#B87F35",
+    "accentLight": "#D3A25E",
+    "cyan": "#6FD6E8"
+  },
+
+  "hero": {
+    "eyebrow": "Licensed \u00b7 Insured \u00b7 24/7 Dispatch",
+    "headline": "Your pipes, handled\nright the first time.",
+    "subheadline": "Same-day plumbing repair, installation, and emergency service \u2014 with upfront pricing and a crew that shows up when they say they will.",
+    "ctaPrimary": "Call Now",
+    "ctaSecondary": "Call Now",
+    "statusLabel": "Currently dispatching",
+    "statusValue": "Available Today"
+  },
+
+  "stats": [
+    { "value": 20, "prefix": "", "suffix": "+", "label": "Years in business", "gaugePercent": 85 },
+    { "value": 15000, "prefix": "", "suffix": "+", "label": "Jobs completed", "gaugePercent": 92 },
+    { "value": 4.9, "prefix": "", "suffix": "\u2605", "label": "Average rating", "gaugePercent": 98 },
+    { "value": 45, "prefix": "<", "suffix": " min", "label": "Avg. response time", "gaugePercent": 90 }
+  ],
+
+  "services": [
+    { "icon": "droplet", "title": "Drain Cleaning", "description": "Fast clearing for slow or blocked drains, using camera inspection to find the real cause." },
+    { "icon": "thermometer", "title": "Water Heater Repair & Install", "description": "Tank and tankless systems repaired, replaced, or installed \u2014 same week in most cases." },
+    { "icon": "wrench", "title": "Leak Detection & Repair", "description": "Pinpoint leak detection that finds hidden leaks before they become water damage." },
+    { "icon": "pipe", "title": "Pipe Repair & Repiping", "description": "Patch, reroute, or fully repipe aging plumbing with durable, code-compliant materials." },
+    { "icon": "clock", "title": "Emergency Plumbing", "description": "Burst pipe or major leak? We dispatch around the clock, every day of the year." },
+    { "icon": "shield", "title": "Sewer Line Services", "description": "Sewer camera inspection, trenchless repair, and full line replacement." },
+    { "icon": "home", "title": "Bath & Kitchen Remodels", "description": "Fixture, tub, and full plumbing rework for renovation projects, big or small." },
+    { "icon": "filter", "title": "Water Filtration", "description": "Whole-home filtration and softening systems fitted to your water supply." }
+  ],
+
+  "about": {
+    "eyebrow": "Why homeowners call us",
+    "headline": "A crew that treats your home like their own.",
+    "text": "We're a locally owned plumbing company built on a simple idea: show up on time, explain what's actually wrong, and charge what we quoted. Every technician is licensed, background-checked, and drives a fully stocked truck \u2014 so most jobs get finished in a single visit.",
+    "features": [
+      "Upfront, flat-rate pricing before we start",
+      "Licensed, bonded & insured technicians",
+      "Workmanship guaranteed for 2 years",
+      "Fully stocked trucks for same-visit fixes"
+    ],
+    "image": ""
+  },
+
+  "serviceAreas": ["Riverside", "Oakwood", "Maple Heights", "Fairview", "Lakeside", "Brookfield", "Elm Corner", "Northgate"],
+
+  "gallery": [
+    { "image": "", "caption": "Tankless water heater install", "location": "Oakwood" },
+    { "image": "", "caption": "Repiped kitchen supply lines", "location": "Fairview" },
+    { "image": "", "caption": "Trenchless sewer repair", "location": "Riverside" },
+    { "image": "", "caption": "Full bathroom remodel", "location": "Lakeside" }
+  ],
+
+  "testimonials": [
+    { "name": "Marcus T.", "location": "Riverside", "rating": 5, "text": "Called at 9pm with a burst pipe and someone was at my door in 40 minutes. Fixed it right, fair price, no upsell games." },
+    { "name": "Priya D.", "location": "Oakwood", "rating": 5, "text": "Explained exactly what was wrong with our water heater and gave me options instead of just replacing it. Really appreciated that." },
+    { "name": "Sam K.", "location": "Fairview", "rating": 5, "text": "Repiped our whole upstairs bathroom in a day. Clean work, cleaned up after themselves, and it's been perfect since." },
+    { "name": "A. Chen", "location": "Lakeside", "rating": 4, "text": "Great communication from the first call to the invoice. Only reason it's not five stars is scheduling took a few days for a non-emergency job." },
+    { "name": "Danielle R.", "location": "Brookfield", "rating": 5, "text": "Found a slab leak two other companies missed. Saved us from what would've been serious foundation damage." }
+  ],
+
+  "faq": [
+    { "question": "Do you offer 24/7 emergency service?", "answer": "Yes. We dispatch emergency technicians around the clock, including weekends and holidays, for burst pipes, major leaks, and no-water situations." },
+    { "question": "Are your technicians licensed and insured?", "answer": "Every technician is fully licensed, bonded, and insured, and passes a background check before joining a truck." },
+    { "question": "Do you charge for estimates?", "answer": "Standard estimates are free. Diagnostic visits for complex issues may carry a fee, which we'll always confirm with you before we start." },
+    { "question": "What areas do you service?", "answer": "We serve Riverside and the surrounding area \u2014 see the neighborhood list above, or call and we'll confirm your address." },
+    { "question": "What payment methods do you accept?", "answer": "We accept all major credit cards, debit, checks, and offer financing options for larger installation projects." },
+    { "question": "How fast can you get someone to my house?", "answer": "Most non-emergency visits are scheduled within 24 hours. Emergencies are typically dispatched within 45\u201360 minutes." }
+  ],
+
+  "hours": [
+    { "day": "Monday \u2013 Friday", "time": "7:00 AM \u2013 7:00 PM" },
+    { "day": "Saturday", "time": "8:00 AM \u2013 5:00 PM" },
+    { "day": "Sunday", "time": "Emergency calls only" }
+  ],
+  "emergencyNote": "24/7 emergency dispatch available every day",
+
+  "socials": {
+    "facebook": "#",
+    "instagram": "#",
+    "google": "#"
+  },
+
+  "seo": {
+    "title": "BluePeak Plumbing \u2014 Licensed Plumbers in Riverside & Nearby",
+    "description": "Same-day plumbing repair, installation, and 24/7 emergency service in Riverside. Licensed, insured, upfront pricing. Call now to get started.",
+    "keywords": ["plumber Riverside", "emergency plumbing", "water heater repair", "drain cleaning", "licensed plumber"]
+  }
+}
