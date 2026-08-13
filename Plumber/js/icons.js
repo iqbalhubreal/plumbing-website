@@ -27,9 +27,19 @@ const ICONS = {
   menu: `<line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/>`,
   close: `<line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/>`,
   camera: `<path d="M4 8H8L10 5H14L16 8H20V19H4Z"/><circle cx="12" cy="13" r="3.2"/>`,
-  facebook: `<rect x="4" y="4" width="16" height="16" rx="5"/><polyline points="10 20 10 10 14 10"/><line x1="10" y1="14" x2="13" y2="14"/>`,
-  instagram: `<rect x="4" y="4" width="16" height="16" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="16.5" cy="7.5" r="1"/>`,
-  google: `<circle cx="12" cy="12" r="8"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="12" y1="4" x2="12" y2="20"/><path d="M7 7 Q12 12 7 17"/><path d="M17 7 Q12 12 17 17"/>`
+  facebook: `<path d="M1.188 5.594h18.438c0.625 0 1.188 0.563 1.188 1.188v18.438c0 0.625-0.563 1.188-1.188 1.188h-18.438c-0.625 0-1.188-0.563-1.188-1.188v-18.438c0-0.625 0.563-1.188 1.188-1.188zM14.781 17.281h2.875l0.125-2.75h-3v-2.031c0-0.781 0.156-1.219 1.156-1.219h1.75l0.063-2.563s-0.781-0.125-1.906-0.125c-2.75 0-3.969 1.719-3.969 3.563v2.375h-2.031v2.75h2.031v7.625h2.906v-7.625z"/>`,
+  instagram: `<path d="M21.3,9.7c-0.6,0-1.2,0.5-1.2,1.2c0,0.7,0.5,1.2,1.2,1.2c0.7,0,1.2-0.5,1.2-1.2C22.4,10.2,21.9,9.7,21.3,9.7z"/><path d="M16,11.2c-2.7,0-4.9,2.2-4.9,4.9c0,2.7,2.2,4.9,4.9,4.9s4.9-2.2,4.9-4.9C21,13.4,18.8,11.2,16,11.2z M16,19.3c-1.7,0-3.2-1.4-3.2-3.2c0-1.7,1.4-3.2,3.2-3.2c1.7,0,3.2,1.4,3.2,3.2C19.2,17.9,17.8,19.3,16,19.3z"/><path d="M20,6h-8c-3.3,0-6,2.7-6,6v8c0,3.3,2.7,6,6,6h8c3.3,0,6-2.7,6-6v-8C26,8.7,23.3,6,20,6z M24.1,20c0,2.3-1.9,4.1-4.1,4.1h-8c-2.3,0-4.1-1.9-4.1-4.1v-8c0-2.3,1.9-4.1,4.1-4.1h8c2.3,0,4.1,1.9,4.1,4.1V20z"/>`,
+  google: `<path d="M12.2,18.4c-3.5,0,-6.4,-2.9,-6.4,-6.4s2.9,-6.4,6.4,-6.4c1.6,0,3.2,0.6,4.3,1.8l-1.8,1.8c-0.6,-0.6,-1.6,-1,-2.6,-1c-2.1,0,-3.8,1.8,-3.8,3.8s1.8,3.8,3.8,3.8c1.8,0,3,-1.1,3.5,-2.6H12.2v-2.4h6.1C18.7,13.4,17.6,18.4,12.2,18.4z"/>`
+};
+
+/** Some icons (filled badge/glyph icons) don't share the default 24x24 line-icon
+ *  format — this maps their true viewBox and marks them as filled instead of stroked.
+ *  Instagram and Google are cropped to just their glyph (no outer badge shape),
+ *  since the surrounding circular badge is already drawn by .footer__socials a in CSS. */
+const ICON_OVERRIDES = {
+  facebook: { viewBox: "0 5.594 20.814 20.814", filled: true },
+  instagram: { viewBox: "6 6 20 20", filled: true },
+  google: { viewBox: "5.8 5.6 12.6 12.8", filled: true }
 };
 
 const STAR_POINTS = "12 2.5 14.9 8.6 21.5 9.5 16.8 14.1 17.9 20.6 12 17.5 6.1 20.6 7.2 14.1 2.5 9.5 9.1 8.6";
@@ -38,7 +48,12 @@ const STAR_POINTS = "12 2.5 14.9 8.6 21.5 9.5 16.8 14.1 17.9 20.6 12 17.5 6.1 20
 function icon(name, extraClass = "") {
   const body = ICONS[name];
   if (!body) return "";
-  return `<svg class="icon ${extraClass}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${body}</svg>`;
+  const override = ICON_OVERRIDES[name];
+  const viewBox = override ? override.viewBox : "0 0 24 24";
+  const style = override && override.filled
+    ? `fill="currentColor" stroke="none"`
+    : `fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"`;
+  return `<svg class="icon ${extraClass}" viewBox="${viewBox}" ${style} aria-hidden="true">${body}</svg>`;
 }
 
 /** Returns a row of 5 star icons, filled up to `rating` (rounded to nearest whole star). */
