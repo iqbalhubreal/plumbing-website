@@ -1,6 +1,9 @@
 media:
-  input: Plumber
-  output: /Plumber
+  input: Plumber/images
+  output: /Plumber/images
+  categories: [image]
+  extensions: [jpg, jpeg, png, webp]
+  rename: safe
 
 content:
   - name: config
@@ -10,26 +13,39 @@ content:
     format: json
     fields:
       - name: business
+        label: Business
         type: object
         fields:
           - name: name
+            label: Business name
             type: string
           - name: shortName
+            label: Short name
             type: string
           - name: tagline
+            label: Tagline
             type: string
           - name: phone
+            label: Phone
             type: string
           - name: phoneLink
+            label: Phone link
             type: string
           - name: email
+            label: Email
             type: string
           - name: address
+            label: Address
             type: string
           - name: foundedYear
+            label: Founded year
             type: number
+            options:
+              min: 1800
+              max: 2100
 
       - name: theme
+        label: Theme Colors
         type: object
         fields:
           - name: primary
@@ -46,17 +62,20 @@ content:
             type: string
 
       - name: hero
+        label: Hero
         type: object
         fields:
           - name: eyebrow
             type: string
           - name: headline
-            type: string
+            type: text
           - name: subheadline
-            type: string
+            type: text
           - name: ctaPrimary
+            label: Primary CTA text
             type: string
           - name: ctaSecondary
+            label: Secondary CTA text
             type: string
           - name: statusLabel
             type: string
@@ -64,7 +83,10 @@ content:
             type: string
 
       - name: stats
-        type: list
+        label: Stats
+        type: object
+        list:
+          collapsible: true
         fields:
           - name: value
             type: number
@@ -75,19 +97,29 @@ content:
           - name: label
             type: string
           - name: gaugePercent
+            label: Gauge percent
             type: number
+            options:
+              min: 0
+              max: 100
 
       - name: services
-        type: list
+        label: Services
+        type: object
+        list:
+          collapsible: true
         fields:
           - name: icon
-            type: string
+            type: select
+            options:
+              values: [droplet, thermometer, wrench, pipe, clock, shield, home, filter]
           - name: title
             type: string
           - name: description
-            type: string
+            type: text
 
       - name: about
+        label: About
         type: object
         fields:
           - name: eyebrow
@@ -95,27 +127,42 @@ content:
           - name: headline
             type: string
           - name: text
+            type: text
+          - name: features
             type: string
+            list: true
           - name: image
-            type: string
+            type: image
+            options:
+              extensions: [jpg, jpeg, png, webp]
+              rename: safe
 
       - name: serviceAreas
-        type: list
-        field:
-          type: string
+        label: Service Areas
+        type: string
+        list: true
 
       - name: gallery
-        type: list
+        label: Project Gallery
+        type: object
+        list:
+          collapsible: true
         fields:
           - name: image
-            type: string
+            type: image
+            options:
+              extensions: [jpg, jpeg, png, webp]
+              rename: safe
           - name: caption
             type: string
           - name: location
             type: string
 
       - name: testimonials
-        type: list
+        label: Testimonials
+        type: object
+        list:
+          collapsible: true
         fields:
           - name: name
             type: string
@@ -123,19 +170,28 @@ content:
             type: string
           - name: rating
             type: number
+            options:
+              min: 1
+              max: 5
           - name: text
-            type: string
+            type: text
 
       - name: faq
-        type: list
+        label: FAQ
+        type: object
+        list:
+          collapsible: true
         fields:
           - name: question
             type: string
           - name: answer
-            type: string
+            type: text
 
       - name: hours
-        type: list
+        label: Business Hours
+        type: object
+        list:
+          collapsible: true
         fields:
           - name: day
             type: string
@@ -143,9 +199,11 @@ content:
             type: string
 
       - name: emergencyNote
+        label: Emergency Note
         type: string
 
       - name: socials
+        label: Social Links
         type: object
         fields:
           - name: facebook
@@ -156,9 +214,13 @@ content:
             type: string
 
       - name: seo
+        label: SEO
         type: object
         fields:
           - name: title
             type: string
           - name: description
+            type: text
+          - name: keywords
             type: string
+            list: true
