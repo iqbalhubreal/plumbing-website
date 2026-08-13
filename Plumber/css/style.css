@@ -48,6 +48,7 @@
   /* Layout */
   --container-w: 1220px;
   --header-h: 76px;
+  --mobile-cta-h: 86px;
 }
 
 /* ================= RESET ================= */
@@ -63,6 +64,7 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--header-h) + 1rem);
 }
 
 body {
@@ -150,6 +152,7 @@ section {
 /* ================= LAYOUT UTILITIES ================= */
 
 .container {
+  width: 100%;
   max-width: var(--container-w);
   margin: 0 auto;
   padding: 0 1.5rem;
@@ -393,6 +396,15 @@ section > .container {
   width: 100%;
 }
 
+/* Allow long dynamic content to wrap or truncate inside layout tracks. */
+.header__inner > *,
+.hero__inner > *,
+.about__inner > *,
+.contact__inner > *,
+.footer__inner > * {
+  min-width: 0;
+}
+
 .logo {
   display: inline-flex;
   align-items: center;
@@ -437,6 +449,33 @@ section > .container {
 .nav__list {
   display: flex;
   gap: 2rem;
+}
+
+/* Keep every header control visible through the compact desktop range. */
+@media (min-width: 860px) and (max-width: 1180px) {
+  .logo {
+    font-size: 1rem;
+  }
+
+  .nav__list {
+    gap: .95rem;
+  }
+
+  .nav__list a {
+    font-size: .84rem;
+  }
+
+  .header__actions {
+    gap: .75rem;
+  }
+
+  .header__actions .btn--sm {
+    padding: .55rem .85rem;
+  }
+
+  .header__phone {
+    font-size: .8rem;
+  }
 }
 
 .nav__list a {
@@ -707,6 +746,7 @@ section > .container {
   display: flex;
   align-items: center;
   justify-content: center;
+  min-width: 0;
 }
 
 .hero-diagram {
@@ -813,6 +853,7 @@ section > .container {
   flex-direction: column;
   line-height: 1.25;
   min-width: 0;
+  overflow: hidden;
 }
 
 .hero-status__label {
@@ -830,6 +871,9 @@ section > .container {
   font-size: .85rem;
   font-weight: 600;
   color: white;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 /* On narrow phones, keep the badge comfortably inside the screen */
@@ -1222,6 +1266,7 @@ section > .container {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  gap: .75rem;
 }
 
 .areas__list li {
@@ -1320,6 +1365,15 @@ section > .container {
   font-size: .78rem;
   color: rgba(255,255,255,.75);
   font-family: var(--font-mono);
+}
+
+/* Touch devices do not have reliable hover states, so captions stay readable. */
+@media (hover: none) {
+  .gallery-card__caption {
+    opacity: 1;
+    transform: none;
+    padding: .8rem 1rem;
+  }
 }
 
 /* ================= TESTIMONIALS ================= */
@@ -1627,9 +1681,16 @@ section > .container {
   color: var(--color-ink-soft);
 }
 
+.contact__hours li span:first-child {
+  min-width: 0;
+}
+
 .contact__hours li span:last-child {
+  flex: 0 0 auto;
   font-family: var(--font-mono);
   font-weight: 600;
+  text-align: right;
+  white-space: nowrap;
 }
 
 .contact__call-card {
@@ -1759,6 +1820,8 @@ section > .container {
   display: flex;
   align-items: baseline;
   gap: .5rem;
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 .footer__emergency {
@@ -1784,10 +1847,11 @@ section > .container {
   bottom: 0;
   z-index: 90;
   display: flex;
+  min-height: var(--mobile-cta-h);
   padding: .85rem 1rem;
+  padding-bottom: max(.85rem, env(safe-area-inset-bottom));
   background: white;
   box-shadow: 0 -6px 24px rgba(14,36,54,.12);
-  padding-bottom: max(.85rem, env(safe-area-inset-bottom));
 }
 
 @media (min-width: 860px) {
@@ -1798,7 +1862,7 @@ section > .container {
 
 
 body {
-  padding-bottom: 78px;
+  padding-bottom: calc(var(--mobile-cta-h) + env(safe-area-inset-bottom));
 }
 
 @media (min-width: 860px) {
