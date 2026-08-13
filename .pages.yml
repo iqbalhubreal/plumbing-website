@@ -1,212 +1,72 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BluePeak Plumbing — Content Management System</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#155787',
-                        primaryDark: '#0E2436',
-                        primaryLight: '#1F6FA3',
-                        accent: '#B87F35',
-                        accentLight: '#D3A25E',
-                        cyan: '#6FD6E8'
-                    }
-                }
-            }
-        }
-    </script>
-</head>
-<body class="bg-slate-100 font-sans antialiased">
+media:
+  input: Plumber
+  output: /Plumber
 
-    <div class="flex h-screen overflow-hidden">
-        <!-- Sidebar Navigation -->
-        <aside class="w-64 bg-primaryDark text-white flex flex-col hidden md:flex">
-            <div class="p-5 border-b border-slate-800">
-                <h1 class="text-xl font-bold tracking-wide text-cyan">BluePeak CMS</h1>
-                <p class="text-xs text-slate-400 mt-1">v1.0 Production Control Panel</p>
-            </div>
-            <nav class="flex-1 overflow-y-auto p-4 space-y-1 text-sm">
-                <a href="#business" class="flex items-center px-4 py-2.5 rounded-lg bg-primary text-white font-medium">Business Profile</a>
-                <a href="#theme" class="flex items-center px-4 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800">Theme & Colors</a>
-                <a href="#hero" class="flex items-center px-4 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800">Hero Section</a>
-                <a href="#stats" class="flex items-center px-4 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800">Stats Counter</a>
-                <a href="#services" class="flex items-center px-4 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800">Services</a>
-                <a href="#about" class="flex items-center px-4 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800">About Section</a>
-                <a href="#areas" class="flex items-center px-4 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800">Service Areas</a>
-                <a href="#gallery" class="flex items-center px-4 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800">Gallery</a>
-                <a href="#testimonials" class="flex items-center px-4 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800">Testimonials</a>
-                <a href="#faq" class="flex items-center px-4 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800">FAQ Manager</a>
-                <a href="#hours" class="flex items-center px-4 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800">Hours & Emergency</a>
-                <a href="#seo" class="flex items-center px-4 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800">SEO & Meta</a>
-            </nav>
-            <div class="p-4 border-t border-slate-800 text-xs text-slate-400">
-                Logged in as: <span class="text-white font-medium">Admin</span>
-            </div>
-        </aside>
+content:
+  - name: config
+    label: Website Configuration
+    type: file
+    path: Plumber/config.json
+    format: json
+    fields:
+      - name: business
+        type: object
+        fields:
+          - name: name
+            type: string
+          - name: shortName
+            type: string
+          - name: tagline
+            type: string
+          - name: phone
+            type: string
+          - name: phoneLink
+            type: string
+          - name: email
+            type: string
+          - name: address
+            type: string
+          - name: foundedYear
+            type: number
 
-        <!-- Main Content Area -->
-        <main class="flex-1 flex flex-col h-screen overflow-y-auto">
-            <!-- Top Header -->
-            <header class="bg-white border-b border-slate-200 px-8 py-4 flex justify-between items-center sticky top-0 z-10 shadow-sm">
-                <div>
-                    <h2 class="text-xl font-bold text-slate-800">Content Dashboard</h2>
-                    <p class="text-xs text-slate-500">Manage live configurations for BluePeak Plumbing website.</p>
-                </div>
-                <div class="flex items-center space-x-3">
-                    <button class="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 text-sm font-medium rounded-lg transition">Discard Changes</button>
-                    <button class="px-4 py-2 bg-primary hover:bg-primaryLight text-white text-sm font-medium rounded-lg shadow transition">Save & Publish</button>
-                </div>
-            </header>
+      - name: theme
+        type: object
+        fields:
+          - name: primary
+            type: string
+          - name: primaryDark
+            type: string
+          - name: primaryLight
+            type: string
+          - name: accent
+            type: string
+          - name: accentLight
+            type: string
+          - name: cyan
+            type: string
 
-            <!-- Dashboard Forms Wrapper -->
-            <div class="p-8 max-w-5xl mx-auto w-full space-y-10">
-                
-                <!-- Business Profile Form -->
-                <section id="business" class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
-                    <h3 class="text-lg font-bold text-slate-800 mb-4 pb-2 border-b border-slate-100">Business Identity</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-xs font-semibold uppercase text-slate-500 mb-1">Business Name</label>
-                            <input type="text" class="w-full px-3 py-2 border rounded-lg text-sm" value="BluePeak Plumbing">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-semibold uppercase text-slate-500 mb-1">Short Name</label>
-                            <input type="text" class="w-full px-3 py-2 border rounded-lg text-sm" value="BluePeak">
-                        </div>
-                        <div class="md:col-span-2">
-                            <label class="block text-xs font-semibold uppercase text-slate-500 mb-1">Tagline</label>
-                            <input type="text" class="w-full px-3 py-2 border rounded-lg text-sm" value="Fast, Honest Plumbing You Can Trust">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-semibold uppercase text-slate-500 mb-1">Phone Number</label>
-                            <input type="text" class="w-full px-3 py-2 border rounded-lg text-sm" value="(555) 219-4477">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-semibold uppercase text-slate-500 mb-1">Support Email</label>
-                            <input type="email" class="w-full px-3 py-2 border rounded-lg text-sm" value="hello@bluepeakplumbing.com">
-                        </div>
-                        <div class="md:col-span-2">
-                            <label class="block text-xs font-semibold uppercase text-slate-500 mb-1">Physical Address</label>
-                            <input type="text" class="w-full px-3 py-2 border rounded-lg text-sm" value="1420 Harbor Ave, Riverside, CA">
-                        </div>
-                    </div>
-                </section>
+      - name: hero
+        type: object
+        fields:
+          - name: eyebrow
+            type: string
+          - name: headline
+            type: string
+          - name: subheadline
+            type: string
+          - name: ctaPrimary
+            type: string
+          - name: ctaSecondary
+            type: string
+          - name: statusLabel
+            type: string
+          - name: statusValue
+            type: string
 
-                <!-- Theme Manager -->
-                <section id="theme" class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
-                    <h3 class="text-lg font-bold text-slate-800 mb-4 pb-2 border-b border-slate-100">Color Palette & Theme</h3>
-                    <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-                        <div>
-                            <label class="block text-xs font-semibold uppercase text-slate-500 mb-1">Primary Color</label>
-                            <div class="flex items-center space-x-2"><input type="color" value="#155787" class="h-10 w-10 border rounded cursor-pointer"><input type="text" value="#155787" class="w-full px-3 py-2 border rounded-lg text-sm"></div>
-                        </div>
-                        <div>
-                            <label class="block text-xs font-semibold uppercase text-slate-500 mb-1">Primary Dark</label>
-                            <div class="flex items-center space-x-2"><input type="color" value="#0E2436" class="h-10 w-10 border rounded cursor-pointer"><input type="text" value="#0E2436" class="w-full px-3 py-2 border rounded-lg text-sm"></div>
-                        </div>
-                        <div>
-                            <label class="block text-xs font-semibold uppercase text-slate-500 mb-1">Primary Light</label>
-                            <div class="flex items-center space-x-2"><input type="color" value="#1F6FA3" class="h-10 w-10 border rounded cursor-pointer"><input type="text" value="#1F6FA3" class="w-full px-3 py-2 border rounded-lg text-sm"></div>
-                        </div>
-                        <div>
-                            <label class="block text-xs font-semibold uppercase text-slate-500 mb-1">Accent Color</label>
-                            <div class="flex items-center space-x-2"><input type="color" value="#B87F35" class="h-10 w-10 border rounded cursor-pointer"><input type="text" value="#B87F35" class="w-full px-3 py-2 border rounded-lg text-sm"></div>
-                        </div>
-                        <div>
-                            <label class="block text-xs font-semibold uppercase text-slate-500 mb-1">Accent Light</label>
-                            <div class="flex items-center space-x-2"><input type="color" value="#D3A25E" class="h-10 w-10 border rounded cursor-pointer"><input type="text" value="#D3A25E" class="w-full px-3 py-2 border rounded-lg text-sm"></div>
-                        </div>
-                        <div>
-                            <label class="block text-xs font-semibold uppercase text-slate-500 mb-1">Cyan Highlight</label>
-                            <div class="flex items-center space-x-2"><input type="color" value="#6FD6E8" class="h-10 w-10 border rounded cursor-pointer"><input type="text" value="#6FD6E8" class="w-full px-3 py-2 border rounded-lg text-sm"></div>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Hero Section Config -->
-                <section id="hero" class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
-                    <h3 class="text-lg font-bold text-slate-800 mb-4 pb-2 border-b border-slate-100">Hero Content</h3>
-                    <div class="space-y-4">
-                        <div>
-                            <label class="block text-xs font-semibold uppercase text-slate-500 mb-1">Eyebrow Banner</label>
-                            <input type="text" class="w-full px-3 py-2 border rounded-lg text-sm" value="Licensed · Insured · 24/7 Dispatch">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-semibold uppercase text-slate-500 mb-1">Headline</label>
-                            <textarea class="w-full px-3 py-2 border rounded-lg text-sm" rows="2">Your pipes, handled right the first time.</textarea>
-                        </div>
-                        <div>
-                            <label class="block text-xs font-semibold uppercase text-slate-500 mb-1">Subheadline</label>
-                            <textarea class="w-full px-3 py-2 border rounded-lg text-sm" rows="3">Same-day plumbing repair, installation, and emergency service — with upfront pricing and a crew that shows up when they say they will.</textarea>
-                        </div>
-                        <div class="grid grid-cols-2 gap-4">
-                            <div>
-                                <label class="block text-xs font-semibold uppercase text-slate-500 mb-1">Status Label</label>
-                                <input type="text" class="w-full px-3 py-2 border rounded-lg text-sm" value="Currently dispatching">
-                            </div>
-                            <div>
-                                <label class="block text-xs font-semibold uppercase text-slate-500 mb-1">Status Value</label>
-                                <input type="text" class="w-full px-3 py-2 border rounded-lg text-sm" value="Available Today">
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Services Manager Overview -->
-                <section id="services" class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
-                    <div class="flex justify-between items-center mb-4 pb-2 border-b border-slate-100">
-                        <h3 class="text-lg font-bold text-slate-800">Services Catalog (8 Items)</h3>
-                        <button class="px-3 py-1 bg-primary text-white text-xs font-medium rounded-md">Add Service</button>
-                    </div>
-                    <div class="space-y-3">
-                        <div class="p-3 bg-slate-50 border rounded-lg flex justify-between items-center">
-                            <div>
-                                <h4 class="font-semibold text-sm text-slate-800">Drain Cleaning</h4>
-                                <p class="text-xs text-slate-500">Fast clearing for slow or blocked drains...</p>
-                            </div>
-                            <button class="text-xs text-primary font-medium hover:underline">Edit</button>
-                        </div>
-                        <div class="p-3 bg-slate-50 border rounded-lg flex justify-between items-center">
-                            <div>
-                                <h4 class="font-semibold text-sm text-slate-800">Water Heater Repair & Install</h4>
-                                <p class="text-xs text-slate-500">Tank and tankless systems repaired...</p>
-                            </div>
-                            <button class="text-xs text-primary font-medium hover:underline">Edit</button>
-                        </div>
-                        <div class="p-3 bg-slate-50 border rounded-lg flex justify-between items-center">
-                            <div>
-                                <h4 class="font-semibold text-sm text-slate-800">Emergency Plumbing</h4>
-                                <p class="text-xs text-slate-500">Burst pipe or major leak? We dispatch...</p>
-                            </div>
-                            <button class="text-xs text-primary font-medium hover:underline">Edit</button>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- SEO Control -->
-                <section id="seo" class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
-                    <h3 class="text-lg font-bold text-slate-800 mb-4 pb-2 border-b border-slate-100">SEO & Metadata</h3>
-                    <div class="space-y-4">
-                        <div>
-                            <label class="block text-xs font-semibold uppercase text-slate-500 mb-1">Meta Title</label>
-                            <input type="text" class="w-full px-3 py-2 border rounded-lg text-sm" value="BluePeak Plumbing — Licensed Plumbers in Riverside & Nearby">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-semibold uppercase text-slate-500 mb-1">Meta Description</label>
-                            <textarea class="w-full px-3 py-2 border rounded-lg text-sm" rows="2">Same-day plumbing repair, installation, and 24/7 emergency service in Riverside. Licensed, insured, upfront pricing. Call now to get started.</textarea>
-                        </div>
-                    </div>
-                </section>
-
-            </div>
-        </main>
-    </div>
-
-</body>
-</html>
+      - name: seo
+        type: object
+        fields:
+          - name: title
+            type: string
+          - name: description
+            type: string
