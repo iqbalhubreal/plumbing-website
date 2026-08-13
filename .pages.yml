@@ -1,0 +1,14 @@
+media:
+  input: media
+  output: /media
+
+content:
+  - name: pages
+    label: Pages
+    type: collection
+    path: .
+    fields:
+      - name: title
+        type: string
+      - name: body
+        type: rich-text
