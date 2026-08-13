@@ -1449,6 +1449,7 @@ section > .container {
 .testimonial-card__meta {
   display: flex;
   align-items: center;
+  gap: 0.75rem;
 }
 
 .testimonial-card__avatar {
