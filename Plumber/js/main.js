@@ -123,6 +123,7 @@ function applySEO(config) {
     telephone: business.phone,
     email: business.email,
     address: business.address,
+    foundingDate: business.foundedYear ? String(business.foundedYear) : undefined,
     description: seo.description || ""
   });
   document.head.appendChild(ld);
@@ -161,7 +162,9 @@ function renderHero(config) {
   primary.href = `tel:${business.phoneLink || ""}`;
   primary.innerHTML = `${icon("phone")}${escapeHtml(hero.ctaPrimary || "Call Now")}`;
 
-  document.getElementById("hero-cta-secondary").textContent = "View Services";
+  const secondary = document.getElementById("hero-cta-secondary");
+  secondary.href = "#services";
+  secondary.textContent = hero.ctaSecondary || "View Services";
 
   document.getElementById("hero-trust").innerHTML = [
     ["shield", "Licensed & Insured"],
