@@ -568,6 +568,25 @@ function initScrollReveal() {
 }
 
 
+/* ---------------------------- initial anchor ---------------------------- */
+
+function initInitialAnchor() {
+  const hash = window.location.hash;
+  if (!hash || hash === "#top") return;
+
+  const id = decodeURIComponent(hash.slice(1));
+  const target = document.getElementById(id);
+  if (!target) return;
+
+  // Sections are populated asynchronously from config.json. Re-apply the
+  // browser's initial anchor position after that content has changed layout.
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      target.scrollIntoView({ block: "start", behavior: "auto" });
+    });
+  });
+}
+
 /* ---------------------------- init ---------------------------- */
 
 async function init() {
@@ -603,6 +622,7 @@ async function init() {
   initStatGauges();
   initFAQ();
   initTestimonialCarousel((config.testimonials || []).length);
+  initInitialAnchor();
 }
 
 document.addEventListener("DOMContentLoaded", init);
