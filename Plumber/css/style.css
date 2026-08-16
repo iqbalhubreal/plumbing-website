@@ -656,7 +656,7 @@ section > .container {
   pointer-events: none;
 }
 
-.hero__inner {
+.hero > .hero__inner {
   display: grid;
   gap: 3rem;
   padding-top: 1.5rem;
@@ -664,7 +664,7 @@ section > .container {
 }
 
 @media (min-width: 960px) {
-  .hero__inner {
+  .hero > .hero__inner {
     grid-template-columns: 1.05fr .95fr;
     padding-top: 1rem;
   }
