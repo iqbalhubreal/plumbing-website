@@ -16,6 +16,20 @@
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
 
 <link rel="stylesheet" href="css/style.css">
+
+<!-- Keep direct root loads at the top; preserve intentional #section navigation. -->
+<script>
+  (() => {
+    if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+
+    const keepRootAtTop = () => {
+      if (!window.location.hash) window.scrollTo(0, 0);
+    };
+
+    keepRootAtTop();
+    window.addEventListener("pageshow", keepRootAtTop, { once: true });
+  })();
+</script>
 </head>
 <body>
 
