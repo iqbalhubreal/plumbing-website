@@ -5,6 +5,11 @@
  * different business — this file shouldn't need to change for that.
  */
 
+/* Keep a fresh homepage load at the top instead of restoring a prior scroll position. */
+if ("scrollRestoration" in history) {
+  history.scrollRestoration = "manual";
+}
+
 /* ---------------------------- helpers ---------------------------- */
 
 function escapeHtml(str) {
@@ -572,7 +577,10 @@ function initScrollReveal() {
 
 function initInitialAnchor() {
   const hash = window.location.hash;
-  if (!hash || hash === "#top") return;
+  if (!hash || hash === "#top") {
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+    return;
+  }
 
   const id = decodeURIComponent(hash.slice(1));
   const target = document.getElementById(id);
