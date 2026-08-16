@@ -576,7 +576,7 @@ function stabilizeInitialScroll() {
   const root = document.documentElement;
   const previousScrollBehavior = root.style.scrollBehavior;
   root.style.scrollBehavior = "auto";
-  window.scrollTo(0, 0);
+  window.scrollTo({ top: 0, left: 0, behavior: "instant" });
   root.style.scrollBehavior = previousScrollBehavior;
 }
 

@@ -24,7 +24,13 @@
     if ("scrollRestoration" in history) history.scrollRestoration = "manual";
 
     const keepRootAtTop = () => {
-      if (!window.location.hash) window.scrollTo(0, 0);
+      if (window.location.hash) return;
+
+      const root = document.documentElement;
+      const previousScrollBehavior = root.style.scrollBehavior;
+      root.style.scrollBehavior = "auto";
+      window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+      root.style.scrollBehavior = previousScrollBehavior;
     };
 
     keepRootAtTop();
