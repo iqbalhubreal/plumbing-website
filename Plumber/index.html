@@ -1,11 +1,10 @@
 <!DOCTYPE html>
-<html lang="en" translate="no" class="notranslate initial-load">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Plumbing Business Template</title>
 <meta name="description" content="Local plumbing company website template.">
-<meta name="google" content="notranslate">
 <meta property="og:title" content="">
 <meta property="og:description" content="">
 <meta property="og:type" content="website">
@@ -17,36 +16,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
 
 <link rel="stylesheet" href="css/style.css">
-
-<!-- Keep direct root loads at the top; preserve intentional #section navigation. -->
-<script>
-  (() => {
-    if ("scrollRestoration" in history) history.scrollRestoration = "manual";
-
-    const keepRootAtTop = () => {
-      if (window.location.hash) return;
-
-      const root = document.documentElement;
-      const body = document.body;
-      const previousScrollBehavior = root.style.scrollBehavior;
-      root.style.scrollBehavior = "auto";
-      root.scrollTop = 0;
-      if (body) body.scrollTop = 0;
-      window.scrollTo(0, 0);
-      root.scrollTop = 0;
-      if (body) body.scrollTop = 0;
-      root.style.scrollBehavior = previousScrollBehavior;
-    };
-
-    window.__keepRootAtTop = keepRootAtTop;
-
-    if (window.location.hash) {
-      document.documentElement.classList.remove("initial-load");
-    }
-    keepRootAtTop();
-    window.addEventListener("pageshow", keepRootAtTop, { once: true });
-  })();
-</script>
 </head>
 <body>
 

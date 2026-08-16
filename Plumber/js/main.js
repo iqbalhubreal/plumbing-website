@@ -570,17 +570,6 @@ function initScrollReveal() {
 
 /* ---------------------------- init ---------------------------- */
 
-function stabilizeInitialScroll() {
-  if (window.location.hash) return;
-
-  const root = document.documentElement;
-  const previousScrollBehavior = root.style.scrollBehavior;
-  root.style.scrollBehavior = "auto";
-  window.scrollTo({ top: 0, left: 0, behavior: "instant" });
-  root.style.scrollBehavior = previousScrollBehavior;
-  document.documentElement.classList.remove("initial-load");
-}
-
 async function init() {
   let config;
   try {
@@ -614,7 +603,6 @@ async function init() {
   initStatGauges();
   initFAQ();
   initTestimonialCarousel((config.testimonials || []).length);
-  stabilizeInitialScroll();
 }
 
 document.addEventListener("DOMContentLoaded", init);
