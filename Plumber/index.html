@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" translate="no" class="notranslate">
+<html lang="en" translate="no" class="notranslate initial-load">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -27,12 +27,22 @@
       if (window.location.hash) return;
 
       const root = document.documentElement;
+      const body = document.body;
       const previousScrollBehavior = root.style.scrollBehavior;
       root.style.scrollBehavior = "auto";
-      window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+      root.scrollTop = 0;
+      if (body) body.scrollTop = 0;
+      window.scrollTo(0, 0);
+      root.scrollTop = 0;
+      if (body) body.scrollTop = 0;
       root.style.scrollBehavior = previousScrollBehavior;
     };
 
+    window.__keepRootAtTop = keepRootAtTop;
+
+    if (window.location.hash) {
+      document.documentElement.classList.remove("initial-load");
+    }
     keepRootAtTop();
     window.addEventListener("pageshow", keepRootAtTop, { once: true });
   })();

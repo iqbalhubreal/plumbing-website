@@ -578,6 +578,7 @@ function stabilizeInitialScroll() {
   root.style.scrollBehavior = "auto";
   window.scrollTo({ top: 0, left: 0, behavior: "instant" });
   root.style.scrollBehavior = previousScrollBehavior;
+  document.documentElement.classList.remove("initial-load");
 }
 
 async function init() {

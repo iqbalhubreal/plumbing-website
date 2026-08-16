@@ -67,6 +67,10 @@ html {
   scroll-padding-top: calc(var(--header-h) + 1rem);
 }
 
+html.initial-load {
+  overflow: hidden;
+}
+
 body {
   font-family: var(--font-body);
   color: var(--color-ink);
