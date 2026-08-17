@@ -10,6 +10,14 @@ if ("scrollRestoration" in history) {
   history.scrollRestoration = "manual";
 }
 
+function scrollHomeToTop() {
+  if (window.location.hash) return;
+  window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+}
+
+window.addEventListener("pageshow", scrollHomeToTop);
+window.addEventListener("load", scrollHomeToTop);
+
 /* ---------------------------- helpers ---------------------------- */
 
 function escapeHtml(str) {
@@ -578,7 +586,7 @@ function initScrollReveal() {
 function initInitialAnchor() {
   const hash = window.location.hash;
   if (!hash || hash === "#top") {
-    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+    scrollHomeToTop();
     return;
   }
 
@@ -598,6 +606,8 @@ function initInitialAnchor() {
 /* ---------------------------- init ---------------------------- */
 
 async function init() {
+  scrollHomeToTop();
+
   let config;
   try {
     config = await loadConfig();
