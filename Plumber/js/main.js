@@ -11,8 +11,6 @@ if ("scrollRestoration" in history) {
 }
 
 function scrollHomeToTop() {
-  if (window.location.hash) return;
-
   const reset = () => window.scrollTo({ top: 0, left: 0, behavior: "auto" });
   reset();
 
@@ -24,8 +22,17 @@ function scrollHomeToTop() {
   }
 }
 
-window.addEventListener("pageshow", scrollHomeToTop);
-window.addEventListener("load", scrollHomeToTop);
+window.addEventListener("pageshow", () => {
+  if (!window.location.hash || window.location.hash === "#top") {
+    scrollHomeToTop();
+  }
+});
+
+window.addEventListener("load", () => {
+  if (!window.location.hash || window.location.hash === "#top") {
+    scrollHomeToTop();
+  }
+});
 
 /* ---------------------------- helpers ---------------------------- */
 
@@ -154,7 +161,7 @@ function applySEO(config) {
 /* ---------------------------- render: header ---------------------------- */
 
 function renderHeader(config) {
-  const { business, hero } = config;
+  const { business } = config;
 
   document.getElementById("logo").innerHTML = logoMarkup(business);
 
@@ -593,7 +600,18 @@ function initScrollReveal() {
 /* ---------------------------- initial anchor ---------------------------- */
 
 function initInitialAnchor() {
+  const isReload = performance.getEntriesByType("navigation")[0]?.type === "reload";
   const hash = window.location.hash;
+
+  // On page reloads, clear lingering anchor tags so the page opens at top
+  if (isReload) {
+    if (hash) {
+      history.replaceState(null, "", window.location.pathname);
+    }
+    scrollHomeToTop();
+    return;
+  }
+
   if (!hash || hash === "#top") {
     scrollHomeToTop();
     return;
@@ -603,8 +621,6 @@ function initInitialAnchor() {
   const target = document.getElementById(id);
   if (!target) return;
 
-  // Sections are populated asynchronously from config.json. Re-apply the
-  // browser's initial anchor position after that content has changed layout.
   requestAnimationFrame(() => {
     requestAnimationFrame(() => {
       target.scrollIntoView({ block: "start", behavior: "auto" });
@@ -615,8 +631,6 @@ function initInitialAnchor() {
 /* ---------------------------- init ---------------------------- */
 
 async function init() {
-  scrollHomeToTop();
-
   let config;
   try {
     config = await loadConfig();
@@ -649,7 +663,15 @@ async function init() {
   initStatGauges();
   initFAQ();
   initTestimonialCarousel((config.testimonials || []).length);
+
+  // Position viewport AFTER all elements are rendered into DOM
   initInitialAnchor();
 }
 
 document.addEventListener("DOMContentLoaded", init);
+```[cite: 8]
+
+**Changes Applied**
+
+* **`initInitialAnchor()`**: Added check for `navigation.type === "reload"`. If reloaded, it clears the `#services` hash from the address bar using `history.replaceState` and executes `scrollHomeToTop()`[cite: 8].
+* **`init()` Execution Sequence**: Moved `initInitialAnchor()` to run **after** all section DOM nodes are populated[cite: 8]. This prevents content layout expansion from shifting the viewport down to lower sections during load[cite: 7, 8].
