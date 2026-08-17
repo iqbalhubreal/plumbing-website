@@ -187,7 +187,7 @@ section > .container {
   letter-spacing: .14em;
   text-transform: uppercase;
   color: var(--color-accent);
-  margin-bottom: .9rem;
+  margin-bottom: .7rem;
   display: flex;
   align-items: center;
   gap: .6em;
