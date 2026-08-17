@@ -12,7 +12,16 @@ if ("scrollRestoration" in history) {
 
 function scrollHomeToTop() {
   if (window.location.hash) return;
-  window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+
+  const reset = () => window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+  reset();
+
+  // Mobile browsers can restore the previous scroll position after load.
+  if (window.matchMedia("(max-width: 859px)").matches) {
+    requestAnimationFrame(reset);
+    setTimeout(reset, 150);
+    setTimeout(reset, 600);
+  }
 }
 
 window.addEventListener("pageshow", scrollHomeToTop);
