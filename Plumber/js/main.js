@@ -5,17 +5,27 @@
  * different business — this file shouldn't need to change for that.
  */
 
-/* Start a normal homepage load at the top instead of restoring a previous
-   scroll position. Anchor URLs such as #services and #contact are handled
-   separately after the page has finished rendering. */
+/* Keep a fresh homepage load at the top instead of restoring a prior scroll position. */
 if ("scrollRestoration" in history) {
   history.scrollRestoration = "manual";
 }
 
 function scrollHomeToTop() {
-  if (window.location.hash && window.location.hash !== "#top") return;
-  window.scrollTo(0, 0);
+  if (window.location.hash) return;
+
+  const reset = () => window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+  reset();
+
+  // Mobile browsers can restore the previous scroll position after load.
+  if (window.matchMedia("(max-width: 859px)").matches) {
+    requestAnimationFrame(reset);
+    setTimeout(reset, 150);
+    setTimeout(reset, 600);
+  }
 }
+
+window.addEventListener("pageshow", scrollHomeToTop);
+window.addEventListener("load", scrollHomeToTop);
 
 /* ---------------------------- helpers ---------------------------- */
 
@@ -208,76 +218,67 @@ function renderStats(stats) {
         <svg class="stat-gauge__ring" viewBox="0 0 100 100">
           <circle class="stat-gauge__track" cx="50" cy="50" r="${r}"></circle>
           <circle class="stat-gauge__fill" cx="50" cy="50" r="${r}" transform="rotate(-90 50 50)"
-            stroke-dasharray="${circumference}"
-            stroke-dashoffset="${circumference}"></circle>
+            style="stroke-dasharray:${circumference.toFixed(2)};stroke-dashoffset:${circumference.toFixed(2)}"
+            data-offset="${offset.toFixed(2)}"></circle>
         </svg>
-        <div class="stat-gauge__content">
-          <strong>${escapeHtml(prefix)}${escapeHtml(s.value || "")}${escapeHtml(suffix)}</strong>
-          <span>${escapeHtml(s.label || "")}</span>
+        <div class="stat-gauge__value">
+          <span class="stat-gauge__number" data-value="${s.value}" data-prefix="${escapeHtml(prefix)}" data-suffix="${escapeHtml(suffix)}">${escapeHtml(prefix)}0${escapeHtml(suffix)}</span>
         </div>
+        <p class="stat-gauge__label">${escapeHtml(s.label)}</p>
       </div>`;
     })
     .join("");
 }
 
-function initStatGauges() {
-  const rings = document.querySelectorAll(".stat-gauge__fill");
-
-  const animate = (ring) => {
-    const circumference = 2 * Math.PI * 42;
-    const target = ring.getAttribute("stroke-dashoffset");
-    ring.style.transition = "stroke-dashoffset 1.2s ease";
-    requestAnimationFrame(() => {
-      ring.style.strokeDashoffset = target;
-    });
-  };
-
-  if ("IntersectionObserver" in window) {
-    const io = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            animate(entry.target);
-            io.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.35 }
-    );
-
-    rings.forEach((ring) => {
-      const parent = ring.closest(".stat-gauge");
-      const fill = parent?.querySelector(".stat-gauge__fill");
-      if (fill) {
-        const current = fill.getAttribute("stroke-dashoffset");
-        fill.setAttribute("data-target", current);
-        fill.style.strokeDashoffset = circumference;
-      }
-      io.observe(ring);
-    });
-  } else {
-    rings.forEach(animate);
+function animateCount(el, target, prefix, suffix, duration = 1600) {
+  const start = performance.now();
+  const isDecimal = Math.abs(target % 1) > 0.001;
+  function tick(now) {
+    const t = Math.min((now - start) / duration, 1);
+    const eased = 1 - Math.pow(1 - t, 3);
+    const current = target * eased;
+    const display = isDecimal ? current.toFixed(1) : Math.round(current).toLocaleString("en-US");
+    el.textContent = prefix + display + suffix;
+    if (t < 1) requestAnimationFrame(tick);
   }
+  requestAnimationFrame(tick);
+}
+
+function initStatGauges() {
+  const els = document.querySelectorAll(".stat-gauge");
+  if (!els.length) return;
+  const io = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        const el = entry.target;
+        const fill = el.querySelector(".stat-gauge__fill");
+        requestAnimationFrame(() => {
+          fill.style.strokeDashoffset = fill.getAttribute("data-offset");
+        });
+        const numEl = el.querySelector(".stat-gauge__number");
+        const value = parseFloat(numEl.getAttribute("data-value"));
+        animateCount(numEl, value, numEl.getAttribute("data-prefix") || "", numEl.getAttribute("data-suffix") || "");
+        io.unobserve(el);
+      });
+    },
+    { threshold: 0.4 }
+  );
+  els.forEach((el) => io.observe(el));
 }
 
 /* ---------------------------- render: services ---------------------------- */
 
 function renderServices(services) {
-  const grid = document.getElementById("services-grid");
-
-  grid.innerHTML = services
+  document.getElementById("services-grid").innerHTML = services
     .map(
       (s) => `
-      <article class="service-card reveal">
-        <div class="service-card__icon">${icon(s.icon || "droplet")}</div>
-        <h3>${escapeHtml(s.title || "")}</h3>
-        <p>${escapeHtml(s.description || "")}</p>
-        ${
-          s.link
-            ? `<a href="${escapeHtml(s.link)}" class="text-link">${escapeHtml(s.linkLabel || "Learn More")}${icon("arrowRight")}</a>`
-            : ""
-        }
-      </article>`
+      <div class="service-card reveal">
+        <div class="service-card__icon">${icon(s.icon)}</div>
+        <h3>${escapeHtml(s.title)}</h3>
+        <p>${escapeHtml(s.description)}</p>
+        <div class="service-card__line"></div>
+      </div>`
     )
     .join("");
 }
@@ -285,222 +286,221 @@ function renderServices(services) {
 /* ---------------------------- render: about ---------------------------- */
 
 function renderAbout(about) {
-  document.getElementById("about-title").textContent = about.title || "";
+  document.getElementById("about-eyebrow").textContent = about.eyebrow || "";
+  document.getElementById("about-headline").textContent = about.headline || "";
   document.getElementById("about-text").textContent = about.text || "";
-
-  const list = document.getElementById("about-highlights");
-  list.innerHTML = (about.highlights || [])
-    .map((h) => `<li>${icon("check")}${escapeHtml(h)}</li>`)
+  document.getElementById("about-features").innerHTML = (about.features || [])
+    .map((f) => `<li><span class="icon-check">${icon("check")}</span>${escapeHtml(f)}</li>`)
     .join("");
 
   const media = document.getElementById("about-media");
-  media.innerHTML = mediaPlaceholderOrImage(
-    about.image,
-    about.imageIcon || "wrench",
-    about.imageLabel || "Professional plumbing service"
-  );
+  media.classList.add("reveal");
+  media.innerHTML = mediaPlaceholderOrImage(about.image, "home", "Add a shop or team photo here");
 }
 
-/* ---------------------------- render: areas ---------------------------- */
+/* ---------------------------- render: service areas ---------------------------- */
 
 function renderAreas(areas) {
-  const grid = document.getElementById("areas-grid");
-
-  grid.innerHTML = areas
-    .map(
-      (area) => `
-      <div class="area-card reveal">
-        ${icon(area.icon || "mapPin")}
-        <span>${escapeHtml(area.name || area)}</span>
-      </div>`
-    )
+  document.getElementById("areas-list").innerHTML = areas
+    .map((a) => `<li>${icon("mapPin")}${escapeHtml(a)}</li>`)
     .join("");
 }
 
 /* ---------------------------- render: gallery ---------------------------- */
 
-function renderGallery(gallery) {
-  const grid = document.getElementById("gallery-grid");
-
-  grid.innerHTML = gallery
+function renderGallery(items) {
+  document.getElementById("gallery-grid").innerHTML = items
     .map(
-      (item) => `
-      <div class="gallery-item reveal">
-        ${mediaPlaceholderOrImage(
-          item.image,
-          item.icon || "image",
-          item.label || "Project photo"
-        )}
+      (g) => `
+      <div class="gallery-card reveal">
+        ${mediaPlaceholderOrImage(g.image, "camera", "Add project photo")}
+        <div class="gallery-card__caption">
+          <strong>${escapeHtml(g.caption)}</strong>
+          ${g.location ? `<span>${escapeHtml(g.location)}</span>` : ""}
+        </div>
       </div>`
     )
     .join("");
 }
 
-/* ---------------------------- render: testimonials ---------------------------- */
+/* ---------------------------- render + behavior: testimonials ---------------------------- */
 
-function renderTestimonials(testimonials) {
-  const track = document.getElementById("testimonial-track");
-
-  track.innerHTML = testimonials
+function renderTestimonials(items) {
+  document.getElementById("testimonials-track").innerHTML = items
     .map(
-      (t, i) => `
-      <article class="testimonial-slide ${i === 0 ? "is-active" : ""}">
-        <div class="testimonial-stars" aria-label="${escapeHtml(t.rating || 5)} out of 5 stars">
-          ${Array.from({ length: Number(t.rating || 5) })
-            .map(() => icon("star"))
-            .join("")}
-        </div>
-        <blockquote>${escapeHtml(t.quote || "")}</blockquote>
-        <div class="testimonial-author">
-          <div class="testimonial-avatar">${escapeHtml(initials(t.name))}</div>
-          <div>
-            <strong>${escapeHtml(t.name || "")}</strong>
-            <span>${escapeHtml(t.location || "")}</span>
+      (t) => `
+      <div class="testimonial-card">
+        <div class="testimonial-card__inner">
+          <span class="quote-icon">${icon("quote")}</span>
+          <p class="quote-text">${escapeHtml(t.text)}</p>
+          <div class="stars">${renderStars(t.rating)}</div>
+          <div class="testimonial-card__meta">
+            <span class="testimonial-card__avatar">${escapeHtml(initials(t.name))}</span>
+            <div>
+              <p class="testimonial-card__name">${escapeHtml(t.name)}</p>
+              <p class="testimonial-card__loc">${escapeHtml(t.location || "")}</p>
+            </div>
           </div>
         </div>
-      </article>`
-    )
-    .join("");
-
-  const dots = document.getElementById("testimonial-dots");
-  dots.innerHTML = testimonials
-    .map(
-      (_, i) =>
-        `<button type="button" class="carousel-dot ${i === 0 ? "is-active" : ""}" aria-label="Show review ${
-          i + 1
-        }"></button>`
+      </div>`
     )
     .join("");
 }
 
 function initTestimonialCarousel(count) {
   if (!count) return;
+  const track = document.getElementById("testimonials-track");
+  const dotsContainer = document.getElementById("testi-dots");
+  const prevBtn = document.getElementById("testi-prev");
+  const nextBtn = document.getElementById("testi-next");
+  prevBtn.innerHTML = icon("arrowRight", "icon--flip");
+  nextBtn.innerHTML = icon("arrowRight");
 
-  const slides = Array.from(document.querySelectorAll(".testimonial-slide"));
-  const dots = Array.from(document.querySelectorAll(".carousel-dot"));
-  const prev = document.getElementById("testimonial-prev");
-  const next = document.getElementById("testimonial-next");
+  let index = 0;
+  let perView = getPerView();
+  let timer = null;
 
-  let current = 0;
-
-  function show(index) {
-    current = (index + count) % count;
-
-    slides.forEach((slide, i) => {
-      slide.classList.toggle("is-active", i === current);
-    });
-
-    dots.forEach((dot, i) => {
-      dot.classList.toggle("is-active", i === current);
-    });
+  function getPerView() {
+    const w = window.innerWidth;
+    if (w >= 1024) return Math.min(3, count);
+    if (w >= 720) return Math.min(2, count);
+    return 1;
+  }
+  function maxIndex() {
+    return Math.max(0, count - perView);
+  }
+  function renderDots() {
+    const n = maxIndex() + 1;
+    dotsContainer.innerHTML = Array.from({ length: n })
+      .map((_, i) => `<button data-i="${i}" aria-label="Go to review set ${i + 1}"></button>`)
+      .join("");
+    Array.from(dotsContainer.children).forEach((d) =>
+      d.addEventListener("click", () => go(parseInt(d.dataset.i, 10)))
+    );
+  }
+  function update() {
+    const pct = 100 / perView;
+    track.style.transform = `translateX(-${index * pct}%)`;
+    Array.from(dotsContainer.children).forEach((d, i) => d.classList.toggle("is-active", i === index));
+  }
+  function go(i) {
+    index = Math.max(0, Math.min(i, maxIndex()));
+    update();
+    resetAutoplay();
+  }
+  function handleResize() {
+    const next = getPerView();
+    if (next !== perView) {
+      perView = next;
+      index = Math.min(index, maxIndex());
+      renderDots();
+    }
+    update();
+  }
+  function resetAutoplay() {
+    clearInterval(timer);
+    if (count <= perView) return;
+    timer = setInterval(() => go(index + 1 > maxIndex() ? 0 : index + 1), 6000);
   }
 
-  prev?.addEventListener("click", () => show(current - 1));
-  next?.addEventListener("click", () => show(current + 1));
-  dots.forEach((dot, i) => dot.addEventListener("click", () => show(i)));
+  prevBtn.addEventListener("click", () => go(index - 1 < 0 ? maxIndex() : index - 1));
+  nextBtn.addEventListener("click", () => go(index + 1 > maxIndex() ? 0 : index + 1));
+  window.addEventListener("resize", debounce(handleResize, 150));
 
-  show(0);
+  const viewport = document.querySelector(".testimonials__viewport");
+  viewport.addEventListener("mouseenter", () => clearInterval(timer));
+  viewport.addEventListener("mouseleave", resetAutoplay);
+
+  let touchStartX = null;
+  track.addEventListener("touchstart", (e) => { touchStartX = e.touches[0].clientX; }, { passive: true });
+  track.addEventListener("touchend", (e) => {
+    if (touchStartX === null) return;
+    const dx = e.changedTouches[0].clientX - touchStartX;
+    if (Math.abs(dx) > 40) {
+      dx < 0 ? go(index + 1 > maxIndex() ? 0 : index + 1) : go(index - 1 < 0 ? maxIndex() : index - 1);
+    }
+    touchStartX = null;
+  });
+
+  renderDots();
+  update();
+  resetAutoplay();
 }
 
 /* ---------------------------- render: FAQ ---------------------------- */
 
-function renderFAQ(faq) {
-  const list = document.getElementById("faq-list");
-
-  list.innerHTML = faq
+function renderFAQ(items) {
+  document.getElementById("faq-list").innerHTML = items
     .map(
-      (item, i) => `
+      (f) => `
       <div class="faq-item reveal">
-        <button type="button" class="faq-question" aria-expanded="false">
-          <span>${escapeHtml(item.question || "")}</span>
-          ${icon("plus")}
+        <button class="faq-item__q" aria-expanded="false" type="button">
+          <span>${escapeHtml(f.question)}</span>
+          ${icon("chevronDown")}
         </button>
-        <div class="faq-answer">
-          <div>${escapeHtml(item.answer || "")}</div>
-        </div>
+        <div class="faq-item__a"><p>${escapeHtml(f.answer)}</p></div>
       </div>`
     )
     .join("");
 }
 
 function initFAQ() {
-  document.querySelectorAll(".faq-question").forEach((button) => {
-    button.addEventListener("click", () => {
-      const item = button.closest(".faq-item");
-      const answer = item.querySelector(".faq-answer");
-      const isOpen = button.getAttribute("aria-expanded") === "true";
-
-      button.setAttribute("aria-expanded", String(!isOpen));
-      item.classList.toggle("is-open", !isOpen);
-
+  const items = document.querySelectorAll(".faq-item");
+  items.forEach((item) => {
+    const btn = item.querySelector(".faq-item__q");
+    const answer = item.querySelector(".faq-item__a");
+    btn.addEventListener("click", () => {
+      const isOpen = item.classList.contains("is-open");
+      items.forEach((other) => {
+        other.classList.remove("is-open");
+        other.querySelector(".faq-item__q").setAttribute("aria-expanded", "false");
+        other.querySelector(".faq-item__a").style.maxHeight = "";
+      });
       if (!isOpen) {
+        item.classList.add("is-open");
+        btn.setAttribute("aria-expanded", "true");
         answer.style.maxHeight = answer.scrollHeight + "px";
-      } else {
-        answer.style.maxHeight = "0px";
       }
     });
   });
 }
 
-/* ---------------------------- render: contact ---------------------------- */
+/* ---------------------------- render: contact + footer ---------------------------- */
 
 function renderContact(config) {
-  const { business, contact } = config;
+  const { business, hours } = config;
 
-  document.getElementById("contact-title").textContent =
-    contact.title || "Get in Touch";
+  document.getElementById("contact-details").innerHTML = `
+    <li>${icon("phone")}${escapeHtml(business.phone)}</li>
+    <li>${icon("mapPin")}${escapeHtml(business.address)}</li>`;
 
-  document.getElementById("contact-sub").textContent =
-    contact.subtitle || "";
+  document.getElementById("contact-hours").innerHTML = (hours || [])
+    .map((h) => `<li><span>${escapeHtml(h.day)}</span><span>${escapeHtml(h.time)}</span></li>`)
+    .join("");
 
-  const phone = document.getElementById("contact-phone");
-  phone.href = `tel:${business.phoneLink || ""}`;
-  phone.innerHTML = `${icon("phone")}${escapeHtml(business.phone)}`;
-
-  const email = document.getElementById("contact-email");
-  email.href = `mailto:${business.email || ""}`;
-  email.innerHTML = `${icon("mail")}${escapeHtml(business.email)}`;
-
-  document.getElementById("contact-address").innerHTML =
-    `${icon("mapPin")}${escapeHtml(business.address || "")}`;
-
-  document.getElementById("contact-hours").innerHTML =
-    `${icon("clock")}${escapeHtml(business.hours || "")}`;
 }
 
-/* ---------------------------- render: footer ---------------------------- */
-
 function renderFooter(config) {
-  const { business, footer } = config;
+  const { business, hours, emergencyNote, socials } = config;
 
   document.getElementById("footer-logo").innerHTML = logoMarkup(business);
+  document.getElementById("footer-tagline").textContent = business.tagline || "";
 
-  document.getElementById("footer-description").textContent =
-    footer.description || "";
+  const socialIconMap = { facebook: "facebook", instagram: "instagram", google: "google" };
+  document.getElementById("footer-socials").innerHTML = Object.entries(socials || {})
+    .filter(([, url]) => url)
+    .map(([key, url]) => `<a href="${escapeHtml(url)}" target="_blank" rel="noopener" aria-label="${escapeHtml(key)}">${icon(socialIconMap[key] || "arrowRight")}</a>`)
+    .join("");
 
-  document.getElementById("footer-phone").href =
-    `tel:${business.phoneLink || ""}`;
+  document.getElementById("footer-contact").innerHTML = `
+    <li><a href="tel:${escapeHtml(business.phoneLink || "")}">${escapeHtml(business.phone)}</a></li>
+    <li>${escapeHtml(business.address)}</li>`;
 
-  document.getElementById("footer-phone").innerHTML =
-    `${icon("phone")}${escapeHtml(business.phone)}`;
-
-  document.getElementById("footer-email").href =
-    `mailto:${business.email || ""}`;
-
-  document.getElementById("footer-email").innerHTML =
-    `${icon("mail")}${escapeHtml(business.email)}`;
-
-  document.getElementById("footer-address").innerHTML =
-    `${icon("mapPin")}${escapeHtml(business.address || "")}`;
-
-  const hours = footer.hours || [];
-  document.getElementById("footer-hours").innerHTML = hours
+  document.getElementById("footer-hours").innerHTML = (hours || [])
     .map((h) => `<li>${escapeHtml(h.day)}: ${escapeHtml(h.time)}</li>`)
     .join("");
 
-  document.getElementById("footer-emergency").textContent =
-    footer.emergencyNote || "";
-
+  document.getElementById("footer-emergency").textContent = emergencyNote || "";
   document.getElementById("footer-copyright").textContent =
     `\u00A9 ${new Date().getFullYear()} ${business.name}. All rights reserved.`;
 }
@@ -521,11 +521,9 @@ function renderBannerAndMobileCTA(config) {
 
 function initHeaderScroll() {
   const header = document.getElementById("header");
-
   function onScroll() {
     header.classList.toggle("is-scrolled", window.scrollY > 40);
   }
-
   window.addEventListener("scroll", onScroll, { passive: true });
   onScroll();
 }
@@ -534,68 +532,49 @@ function initMobileNav() {
   const toggle = document.getElementById("nav-toggle");
   const panel = document.getElementById("mobile-nav");
   const backdrop = document.getElementById("mobile-nav-backdrop");
-
   toggle.innerHTML = icon("menu");
 
   function open() {
     panel.hidden = false;
     backdrop.hidden = false;
-
     requestAnimationFrame(() => {
       panel.classList.add("is-open");
       backdrop.classList.add("is-open");
     });
-
     toggle.innerHTML = icon("close");
     toggle.setAttribute("aria-expanded", "true");
     document.body.style.overflow = "hidden";
   }
-
   function close() {
     panel.classList.remove("is-open");
     backdrop.classList.remove("is-open");
     toggle.innerHTML = icon("menu");
     toggle.setAttribute("aria-expanded", "false");
     document.body.style.overflow = "";
-
     setTimeout(() => {
       panel.hidden = true;
       backdrop.hidden = true;
     }, 350);
   }
 
-  toggle.addEventListener("click", () =>
-    panel.classList.contains("is-open") ? close() : open()
-  );
-
+  toggle.addEventListener("click", () => (panel.classList.contains("is-open") ? close() : open()));
   backdrop.addEventListener("click", close);
-
-  panel.querySelectorAll("a").forEach((a) =>
-    a.addEventListener("click", close)
-  );
+  panel.querySelectorAll("a").forEach((a) => a.addEventListener("click", close));
 }
 
 function initBackToTop() {
   const btn = document.getElementById("back-to-top");
-
   btn.innerHTML = icon("chevronDown");
-
   function onScroll() {
     btn.classList.toggle("is-visible", window.scrollY > 700);
   }
-
   window.addEventListener("scroll", onScroll, { passive: true });
-
-  btn.addEventListener("click", () =>
-    window.scrollTo({ top: 0, behavior: "smooth" })
-  );
-
+  btn.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
   onScroll();
 }
 
 function initScrollReveal() {
   const els = document.querySelectorAll(".reveal");
-
   const io = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
@@ -607,15 +586,14 @@ function initScrollReveal() {
     },
     { threshold: 0.15, rootMargin: "0px 0px -40px 0px" }
   );
-
   els.forEach((el) => io.observe(el));
 }
+
 
 /* ---------------------------- initial anchor ---------------------------- */
 
 function initInitialAnchor() {
   const hash = window.location.hash;
-
   if (!hash || hash === "#top") {
     scrollHomeToTop();
     return;
@@ -623,17 +601,13 @@ function initInitialAnchor() {
 
   const id = decodeURIComponent(hash.slice(1));
   const target = document.getElementById(id);
-
   if (!target) return;
 
-  // Sections are populated asynchronously from config.json, so wait until
-  // the rendered layout has settled before applying the requested anchor.
+  // Sections are populated asynchronously from config.json. Re-apply the
+  // browser's initial anchor position after that content has changed layout.
   requestAnimationFrame(() => {
     requestAnimationFrame(() => {
-      target.scrollIntoView({
-        block: "start",
-        behavior: "auto"
-      });
+      target.scrollIntoView({ block: "start", behavior: "auto" });
     });
   });
 }
@@ -641,12 +615,9 @@ function initInitialAnchor() {
 /* ---------------------------- init ---------------------------- */
 
 async function init() {
-  // Do not restore an old scroll position while the homepage is being built.
-  // The final position is decided by initInitialAnchor() below.
   scrollHomeToTop();
 
   let config;
-
   try {
     config = await loadConfig();
   } catch (err) {
