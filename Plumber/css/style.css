@@ -659,14 +659,14 @@ section > .container {
 .hero > .hero__inner {
   display: grid;
   gap: 3rem;
-  padding-top: 1.5rem;
+  padding-top: 2rem;
   align-items: center;
 }
 
 @media (min-width: 960px) {
   .hero > .hero__inner {
     grid-template-columns: 1.05fr .95fr;
-    padding-top: 1rem;
+    padding-top: 1.5rem;
   }
 }
 
