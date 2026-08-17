@@ -666,7 +666,7 @@ section > .container {
 @media (min-width: 960px) {
   .hero > .hero__inner {
     grid-template-columns: 1.05fr .95fr;
-    padding-top: 2.25rem;
+    padding-top: 1rem;
   }
 }
 
